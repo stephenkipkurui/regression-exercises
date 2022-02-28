@@ -26,7 +26,7 @@ def get_titanic_data():
 
         df_titanic = pd.DataFrame(df_titanic)
 
-        df_titanic.to_file(db)
+        df_titanic.to_csv(db)
 
         return df_titanic
 
@@ -41,13 +41,13 @@ def get_iris_data():
 
     else:
 
-        iris_query = '''SELECT * FROM species'''
+        iris_query = '''SELECT * FROM measurements'''
 
         df_iris_species = pd.read_sql(iris_query, conn(db))
 
         df_iris_species = pd.DataFrame(df_iris_species)
 
-        df_iris_species.to_file(db)
+        df_iris_species.to_csv(db)
 
         return df_iris_species
 
@@ -78,6 +78,6 @@ def get_telco_data():
 
         telco_df = pd.DataFrame(telco_df)
 
-        telco_df.to_file(db)
+        telco_df.to_csv(db)
 
         return telco_df
