@@ -66,14 +66,3 @@ def wrangle_zillow():
     
     return train, validate, test
 
-
-# SELECT p16.bedroomcnt AS bedroomcnt16, p16.bathroomcnt AS bathroomcnt16, 
-#                 p16.calculatedfinishedsquarefeet AS calculatedfinishedsqrfeet16, p16.taxvaluedollarcnt AS taxvaluedollarcnt16, 
-#                 p16.yearbuilt AS yearbuilt16, p16.taxamount AS taxamount16, p16.fips AS fips16,p17.bedroomcnt AS bedroomcnt17, 
-#                 p17.bathroomcnt AS bathroomcnt17, p16.calculatedfinishedsquarefeet AS calculatedfinishedsqrfeet17,
-#                 p17.taxvaluedollarcnt AS taxvaluedollarcnt17, p17.yearbuilt AS yearbuilt17, p17.taxamount AS taxamount17, 
-#                 p17.fips AS fips17
-#          FROM properties_2016 p16
-#          JOIN properties_2017 p17 USING(parcelid)
-#          JOIN propertylandusetype plt ON ((p16.propertylandusetypeid = plt.propertylandusetypeid) AND (p17.propertylandusetypeid = plt.propertylandusetypeid) )
-#          WHERE plt.propertylandusedesc = 'Single Family Residential';
