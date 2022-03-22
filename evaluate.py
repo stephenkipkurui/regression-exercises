@@ -26,6 +26,22 @@ def prep_tips():
     return tips
 
 
+def get_clean_mpg_data():
+    '''
+        This function acquires and cleans mpg data from pydataset
+    '''
+
+    mpg = data('mpg')
+
+    # Drop nulls
+    mpg = mpg.dropna()
+
+    # Drop duplicates
+    mpg = mpg.drop_duplicates()
+
+    return mpg
+
+
 def visualize_tips(tips_features, total_bill, tip):
     plt.figure(figsize=(16, 10))
 
