@@ -16,7 +16,7 @@ def get_tips_data():
     # Encode categorical data
     tips['sex'] = tips.sex.map({'Male': 1, 'Female': 0})
     tips['smoker'] = tips.smoker.map({'Yes': 1, 'No': 0})
-    tips['day'] = tips.day.map({'Sun': 7, 'Mon': 0, 'Tue':3, 'Wed': 3, 'Thur': 4, 'Fri':5, 'Sat':6})
+    tips['day'] = tips.day.map({'Sun': 7, 'Mon': 1, 'Tue':3, 'Wed': 3, 'Thur': 4, 'Fri':5, 'Sat':6})
     tips['time'] = tips.time.map({'Dinner': 1, 'Lunch': 0})
     
      # drop duplicates
