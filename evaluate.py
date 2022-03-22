@@ -86,8 +86,10 @@ def visual_tip(tips_features, total_bill, tip):
     # set titles
     plt.title(r'Baseline Residuals', fontsize=12, color='black')
     # add axes labels
-    plt.ylabel(r'$\hat{y}-y$')
-    plt.xlabel('Total Bill')
+#     plt.ylabel(r'$\hat{y}-y$')
+    plt.ylabel('Tipped Amount (USD)')
+
+    plt.xlabel('Total Bill (USD')
 
     # add text
     plt.text(85, 15, r'', ha='left', va='center', color='black')
