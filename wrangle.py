@@ -66,3 +66,22 @@ def wrangle_zillow():
     
     return train, validate, test
 
+
+def wrangle_grades():
+    '''
+    Wrangle grades will acquire data about student grades
+    from the local directory presuming student_grades.csv lives in cwd
+    will drop missing values and replace whitespace as well as cast data types to integer
+    returns a train, validate and test data set
+    '''
+    # grab our data
+    df = pd.read_csv('student_grades.csv')
+    # remove whitespace  
+    df = df.replace(r'^\s*$', np.nan, regex=True)
+    # drop nulls
+    df = df.dropna()
+    # cast as integers
+    df = df.astype('int')
+    # split data
+    return split_data(df)
+
