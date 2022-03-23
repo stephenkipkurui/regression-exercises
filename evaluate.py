@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+from math import sqrt
+
 
 def get_tips_data():
     '''
@@ -113,51 +115,77 @@ def visual_tip(tips_features, total_bill, tip):
 
     return plt.show()
 
+def residuals(actual, predicted):
+    '''
+    ∆(y,yhat)
+    '''
+    return actual - predicted
 
-# >- plot_residuals(y, yhat): creates a residual plot
+def sse(actual, predicted):
+    '''
+    sum of squared error
+    '''
+    return (residuals(actual, predicted) ** 2).sum()
 
-# >- regression_errors(y, yhat): returns the following values:
-# >>- sum of squared errors(SSE)
-# >>- explained sum of squares(ESS)
-# >>- total sum of squares(TSS)
-# >>- mean squared error(MSE)
-# >>- root mean squared error(RMSE)
+def mse(actual, predicted):
+    '''
+    mean squared error
+    '''
+    n = actual.shape[0]
+    return sse(actual, predicted) / n
 
-# >- baseline_mean_errors(y): computes the SSE, MSE, and RMSE for the baseline model
-# >- better_than_baseline(y, yhat): returns true if your model performs better than the baseline, otherwise false
+def rmse(actual, predicted):
+    '''
+    root mean squared error
+    '''
+    return sqrt(mse(actual, predicted))
 
+def ess(actual, predicted):
+    '''
+    explained sum of squared error
+    '''
+    return ((predicted - actual.mean()) ** 2).sum()
 
-def plot_residuals(mpg, displ, hwy):
+def tss(actual):
+    '''
+    total sum of squared error
+    '''
+    return ((actual - actual.mean()) ** 2).sum()
 
-    mpg = mpg.dropna()
+def r2_score(actual, predicted):
+    '''
+    explained variance
+    '''
+    return ess(actual, predicted) / tss(actual)
 
-    mpg = mpg.drop_duplicates()
+def plot_residuals(actual, predicted):
+    residuals = actual - predicted
+    plt.hlines(0, actual.min(), actual.max(), ls=':')
+    plt.scatter(actual, residuals)
+    plt.ylabel('residual ($y - \hat{y}$)')
+    plt.xlabel('actual value ($y$)')
+    plt.title('Actual vs Residual')
+    return plt.gca()
 
-    mpg = mpg.hwy.astype('int')
+def regression_errors(actual, predicted):
+    return pd.Series({
+        'sse': sse(actual, predicted),
+        'ess': ess(actual, predicted),
+        'tss': tss(actual),
+        'mse': mse(actual, predicted),
+        'rmse': rmse(actual, predicted),
+        'r2': r2_score(actual, predicted),
+    })
 
-    mpg = pd.DataFrame(np.array(mpg[['displ', 'hwy']].to_numpy()), columns=[
-                       'engine_displ', 'hwy_mpg'])
+def baseline_mean_errors(actual):
+    predicted = actual.mean()
+    return {
+        'sse': sse(actual, predicted),
+        'mse': mse(actual, predicted),
+        'rmse': rmse(actual, predicted),
+    }
 
-    plt.figure(figsize=(16, 10))
-    plt.scatter(mpg, hwy, color='dimgray')
-
-    # Plot regression line
-    plt.plot(mpg, mpg.yhat_predicted,
-             color='darkseagreen', linewidth=3)
-
-#     # add the residual line at y=0
-#     plt.annotate('', xy=(70, 0), xytext=(100, 0), xycoords='data',
-#                  textcoords='data', arrowprops={'arrowstyle': '-', 'color': 'darkseagreen'})
-
-    # set titles
-    plt.title(r'Baseline Residuals', fontsize=12, color='black')
-    # add axes labels
-#     plt.ylabel(r'$\hat{y}-y$')
-    plt.ylabel('Highway Mileage')
-
-    plt.xlabel('Engine Displacement')
-
-    # add text
-    plt.text(85, 15, r'', ha='left', va='center', color='black')
-
-    return plt.show()
+def better_than_baseline(actual, predicted):
+    sse_baseline = sse(actual, actual.mean())
+    sse_model = sse(actual, predicted)
+    return sse_model < sse_baseline
